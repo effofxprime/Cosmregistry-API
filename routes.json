@@ -1,0 +1,4 @@
+{
+    "/mainnet/:name": "/:name?type=mainnet",
+    "/testnet/:name": "/:name?type=testnet"
+}
