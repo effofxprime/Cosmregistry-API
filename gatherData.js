@@ -1,4 +1,12 @@
 "use strict";
+/**
+ * @Author: Jonathan - Erialos 
+ * @Email: erialos@thesilverfox.pro
+ * @Date: 2023-07-27 11:31:41 
+ * @Last Modified by: Jonathan - Erialos
+ * @Last Modified time: 2023-07-28 07:31:10
+ * @Description: file:///c%3A/GitHub/Cosmregistry-API/gatherData.js
+ */
 
 /*
 1. Use github api to get directory lists for mainnet and testnet
@@ -64,6 +72,7 @@ async function getChainList(url) {
 async function getModifiedDate(chain) {
     // const browser = await puppeteer.launch({ headless: "new" });
     // const page = await browser.newPage();
+    
     let path = "";
     if (chain.includes("testnet")) {
         path = `testnets/${chain}`;
@@ -92,7 +101,7 @@ async function getModifiedDate(chain) {
     //     curl -sL https://api.github.com/repos/cosmos/chain-registry/commits?path=8ball | jq '.[0].commit.committer.date'
     // "2023-05-06T03:14:53Z"
     const url = `https://api.github.com/repos/cosmos/chain-registry/commits?path=${path}`;
-    const result = await fetch(url).then((res) => res.json());
+    const result = await fetch(url, ghAuthHeader).then((res) => res.json());
     const datetime = result[0].commit.committer.date;
     const utcDate = new Date(datetime).toDateString();
     return utcDate;
@@ -134,26 +143,32 @@ async function getModifiedDate(chain) {
 }
 
 async function getChainInfo(url) {
-    let ghRawURL = "";
+    /* let ghRawURL = "";
     if (url.includes("testnets")) {
         ghRawURL = ghRawTestnet;
     } else {
         ghRawURL = ghRaw;
-    }
+    } */
+    Object.assign(ghAuthHeader["headers"], {
+        Accept: "application/vnd.github.VERSION.raw",
+    });
+    // console.log(ghAuthHeader);
 
-    const chainList = await getChainList(url);
+    const chainList = await getChainList(url, ghAuthHeader);
     let chainListObj = {};
     let arr = [];
 
     chainList.forEach((el) => {
-        const chainDataURL = `${ghRawURL}/${el}/chain.json`;
+        const chainDataURL = `${url}/${el}/chain.json`;
         arr.push(chainDataURL);
     });
+    // console.dir(arr, { maxArrayLength: null });
     await Promise.allSettled(
         arr.map(async (el) => {
-            const chainJson = await fetch(el).then((data) =>
+            const chainJson = await fetch(el, ghAuthHeader).then((data) =>
                 Promise.resolve(data.json())
             );
+            // console.dir(chainJson, { maxArrayLength: null });
             /**
              * List of object keys we want
              *
@@ -185,9 +200,9 @@ async function getChainInfo(url) {
                 //last_modified: #TODO ## document.querySelector("#repo-content-pjax-container > div > div > div.Layout.Layout--flowRow-until-md.Layout--sidebarPosition-end.Layout--sidebarPosition-flowRow-end > div.Layout-main > div.Box.mb-3 > div.js-details-container.Details > div.Details-content--hidden-not-important.js-navigation-container.js-active-navigation-container.d-md-block > div:nth-child(15) > div.color-fg-muted.text-right > relative-time").getAttribute("datetime") ##
                 last_modified: await getModifiedDate(chainJson.chain_name),
             };
+            console.dir(chainListObj, { maxArrayLength: null });
         })
     );
-    // console.log(chainListObj);
     return chainListObj;
 }
 
