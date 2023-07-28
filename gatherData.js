@@ -4,7 +4,7 @@
  * @Email erialos@thesilverfox.pro
  * @Date 2023-07-27 11:31:41 
  * @Last Modified by: Jonathan - Erialos
- * @Last Modified time: 2023-07-28 12:58:12
+ * @Last Modified time: 2023-07-28 13:16:58
  * @Description This Javascript program uses the GitHub API to query the Cosmos Registry API to get directory names for
  *      Mainnet and Testnet chains. It also reads the chains specific 'chain.json' file, and puts specific information 
  *      into a key object based on the chains folder name in the Cosmos Registry.
@@ -50,7 +50,7 @@ async function getChainList(url) {
             }
             return res.json();
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(`Error:  ${err}`))
         .then(async (data) => {
             const arr = [];
             data.forEach((el) => {
@@ -85,7 +85,7 @@ async function getModifiedDate(chain) {
             }
             return res.json();
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(`Error:  ${err}`));
     const datetime = result[0].commit.committer.date;
     const utcDate = new Date(datetime).toDateString();
     return utcDate;
@@ -116,7 +116,7 @@ async function getChainInfo(url) {
                     }
                     return Promise.resolve(res.json());
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(`Error:  ${err}`));
             
             chainListObj[chainJson.chain_name] = {
                 name: chainJson.chain_name,
