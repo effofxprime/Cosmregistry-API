@@ -1,4 +1,5 @@
 {
+    "/api/v1/*": "/$1",
     "/mainnet/:name": "/:name?type=mainnet",
     "/testnet/:name": "/:name?type=testnet"
 }

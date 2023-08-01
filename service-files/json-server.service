@@ -1,0 +1,18 @@
+# https://stackoverflow.com/questions/48195340/systemd-with-multiple-execstart
+
+# Create a target and then two service files.  One for json-server, the other for bree.
+[Unit]
+Description=JSON-SERVER Rest API
+PartOf=cosmregistry-api.target
+After=network.target
+
+[Service]
+Group=cosmapi
+User=cosmapi
+WorkingDirectory=/home/cosmapi/Cosmregistry-API
+Type=simple
+ExecStart=npx json-server --config "./config/json-server.json" "./data/data.json"
+Restart=on-failure
+
+[Install]
+WantedBy=cosmregistry-api.target

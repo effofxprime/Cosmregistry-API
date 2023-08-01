@@ -1,0 +1,5 @@
+{
+    "interval": "every 1 hour",
+    "token": "YOUR GITHUB TOKEN HERE",
+    "user": "YOUR GITHUB USERNAME HERE"
+}

@@ -1,0 +1,8 @@
+{
+    "port": 8000,
+    "read-only": true,
+    "watch": true,
+    "routes": "./config/routes.json",
+    "id": "name",
+    "no-cors": true
+}

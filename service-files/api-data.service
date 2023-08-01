@@ -1,0 +1,15 @@
+[Unit]
+Description=Cosmregistry API - Data Gathering
+PartOf=cosmregistry-api.target
+After=network.target
+
+[Service]
+Group=cosmapi
+User=cosmapi
+WorkingDirectory=/home/cosmapi/Cosmregistry-API
+Type=simple
+ExecStart=node cosmregistry-api.js
+Restart=on-failure
+
+[Install]
+WantedBy=cosmregistry-api.target

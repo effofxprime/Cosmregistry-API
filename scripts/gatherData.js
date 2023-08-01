@@ -4,17 +4,22 @@
  * @Email erialos@thesilverfox.pro
  * @Date 2023-07-27 11:31:41
  * @Last Modified by: Jonathan - Erialos
- * @Last Modified time: 2023-07-29 14:48:06
+ * @Last Modified time: 2023-07-31 16:52:27
  * @Description This Javascript program uses the GitHub API to query the Cosmos Registry API to get directory names for
  *      Mainnet and Testnet chains. It also reads the chains specific 'chain.json' file, and puts specific information
  *      into a key object based on the chains folder name in the Cosmos Registry.
  */
 
+const fs = require("fs");
+const path = require("path");
+const dataDir = path.resolve(__dirname, "../data");
+const configDir = path.resolve(__dirname, "../config");
+
 const ghCRMainnet =
     "https://api.github.com/repos/cosmos/chain-registry/contents";
 const ghCRTestnet =
     "https://api.github.com/repos/cosmos/chain-registry/contents/testnets";
-const ghHeaders = require("./ghHeaders.json");
+const ghHeaders = require(`${configDir}/config.json`);
 const ghAuthHeader = {
     method: "GET",
     headers: {
@@ -25,7 +30,14 @@ const ghAuthHeader = {
     },
 };
 
-const fs = require("fs");
+async function ghAPIVersion() {
+    const version = await Promise.resolve(
+        fetch("https://api.github.com/versions")
+            .then((res) => res.json())
+            .then((data) => data[0])
+    );
+    ghAuthHeader.headers["X-GitHub-Api-Version"] = version;
+}
 
 async function sortObj(obj) {
     return await Promise.resolve(
@@ -125,7 +137,7 @@ async function getChainInfo(url) {
                     }
                     return await res.json();
                 })
-                .catch(err => console.log(`Error:  ${err}`))
+                .catch((err) => console.log(`Error:  ${err}`))
                 .then(async (data) => {
                     const chainName =
                         data?.network_type == "testnet" &&
@@ -159,6 +171,9 @@ async function getChainInfo(url) {
 }
 
 (async () => {
+    // Set GitHub API Version
+    await ghAPIVersion();
+
     const mainnet = await getChainInfo(ghCRMainnet);
     const testnet = await getChainInfo(ghCRTestnet);
     let chainList = {
@@ -169,7 +184,7 @@ async function getChainInfo(url) {
     };
 
     const data = JSON.stringify(chainList);
-    fs.writeFile("data.json", data, (err) => {
+    fs.writeFile(`${dataDir}/data.json`, data, (err) => {
         if (err) {
             console.error(`Error:  ${err}`);
             throw err;
