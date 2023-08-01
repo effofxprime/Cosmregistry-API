@@ -1,8 +1,10 @@
 {
     "port": 8000,
+    "host": "127.0.0.1",
     "read-only": true,
     "watch": true,
     "routes": "./config/routes.json",
     "id": "name",
-    "no-cors": true
+    "no-cors": false,
+    "no-gzip": false
 }

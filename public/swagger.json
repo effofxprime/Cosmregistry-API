@@ -1,0 +1,223 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Cosmregistry API",
+        "version": "1.0",
+        "description": "Restful API designed to query data from the [Cosmos Chain Registry](https://github.com/cosmos/chain-registry) for new blockchains and updates."
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api/v1"
+        }
+    ],
+    "paths": {
+        "/mainnet": {
+            "get": {
+                "summary": "Cosmos Mainnet Blockchains",
+                "description": "Returns a list of Cosmos mainnet blockchains from the Cosmos Registry github repo.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Protocol"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mainnet/{chain}": {
+            "get": {
+                "summary": "Cosmos Chain Information",
+                "description": "Select a chain from the /mainnet response and retrieve detailed information for the specific blockchain.",
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "description": "Blockchain Name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MainnetChain"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testnet": {
+            "get": {
+                "summary": "Cosmos Testnet Blockchains.",
+                "description": "Returns a list of Cosmos testnet blockchains from the Cosmos Registry github repo.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Protocol"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testnet/{chain}": {
+            "get": {
+                "summary": "Cosmos Chain Information",
+                "description": "Select a chain from the /testnet response and retrieve detailed information for the specific blockchain.",
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "description": "Blockchain Name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestnetChain"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Protocol": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "example": [
+                    "Blockchain-1",
+                    "Blockchain-2",
+                    "Blockchain-3",
+                    "..."
+                ]
+            },
+            "MainnetChain": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "stargaze"
+                    },
+                    "pretty_name": {
+                        "type": "string",
+                        "example": "Stargaze"
+                    },
+                    "network_type": {
+                        "type": "string",
+                        "example": "mainnet"
+                    },
+                    "website": {
+                        "type": "string",
+                        "example": "https://stargaze.zone/"
+                    },
+                    "daemon_name": {
+                        "type": "string",
+                        "example": "starsd"
+                    },
+                    "chain_id": {
+                        "type": "string",
+                        "example": "stargaze-1"
+                    },
+                    "node_home": {
+                        "type": "string",
+                        "example": "$HOME/.starsd"
+                    },
+                    "denom": {
+                        "type": "string",
+                        "example": "ustars"
+                    },
+                    "git_repo": {
+                        "type": "string",
+                        "example": "https://github.com/public-awesome/stargaze"
+                    },
+                    "recommended_version": {
+                        "type": "string",
+                        "example": "v10.0.1"
+                    },
+                    "last_modified": {
+                        "type": "string",
+                        "example": "Fri Jul 28 2023"
+                    }
+                }
+            },
+            "TestnetChain": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "stargazetestnet"
+                    },
+                    "pretty_name": {
+                        "type": "string",
+                        "example": "Stargaze Testnet"
+                    },
+                    "network_type": {
+                        "type": "string",
+                        "example": "testnet"
+                    },
+                    "website": {
+                        "type": "string",
+                        "example": "https://stargaze.zone/"
+                    },
+                    "daemon_name": {
+                        "type": "string",
+                        "example": "starsd"
+                    },
+                    "chain_id": {
+                        "type": "string",
+                        "example": "elgafar-1"
+                    },
+                    "node_home": {
+                        "type": "string",
+                        "example": "$HOME/.starsd"
+                    },
+                    "denom": {
+                        "type": "string",
+                        "example": "ustars"
+                    },
+                    "git_repo": {
+                        "type": "string",
+                        "example": "https://github.com/public-awesome/stargaze"
+                    },
+                    "recommended_version": {
+                        "type": "string",
+                        "example": "v7.0.0"
+                    },
+                    "last_modified": {
+                        "type": "string",
+                        "example": "Fri Apr 28 2023"
+                    }
+                }
+            }
+        },
+    }
+}

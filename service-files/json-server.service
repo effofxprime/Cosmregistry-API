@@ -1,6 +1,3 @@
-# https://stackoverflow.com/questions/48195340/systemd-with-multiple-execstart
-
-# Create a target and then two service files.  One for json-server, the other for bree.
 [Unit]
 Description=JSON-SERVER Rest API
 PartOf=cosmregistry-api.target
