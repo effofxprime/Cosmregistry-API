@@ -4,7 +4,7 @@
  * @Email erialos@thesilverfox.pro
  * @Date 2023-07-27 11:31:41
  * @Last Modified by: Jonathan - Erialos
- * @Last Modified time: 2023-07-31 16:52:27
+ * @Last Modified time: 2023-08-02 08:17:17
  * @Description This Javascript program uses the GitHub API to query the Cosmos Registry API to get directory names for
  *      Mainnet and Testnet chains. It also reads the chains specific 'chain.json' file, and puts specific information
  *      into a key object based on the chains folder name in the Cosmos Registry.
@@ -30,6 +30,14 @@ const ghAuthHeader = {
     },
 };
 
+async function sortArr(arr) {
+    return await Promise.resolve(
+        arr.sort((a, b) => {
+            return a - b;
+        })
+    );
+}
+
 async function ghAPIVersion() {
     const version = await Promise.resolve(
         fetch("https://api.github.com/versions")
@@ -37,25 +45,6 @@ async function ghAPIVersion() {
             .then((data) => data[0])
     );
     ghAuthHeader.headers["X-GitHub-Api-Version"] = version;
-}
-
-async function sortObj(obj) {
-    return await Promise.resolve(
-        Object.keys(obj)
-            .sort()
-            .reduce((result, key) => {
-                result[key] = obj[key];
-                return result;
-            }, {})
-    );
-}
-
-async function sortArr(arr) {
-    return await Promise.resolve(
-        arr.sort((a, b) => {
-            return a - b;
-        })
-    );
 }
 
 async function getChainList(url) {
@@ -78,8 +67,7 @@ async function getChainList(url) {
                 )
                     arr.push(el.name);
             });
-            let sortedArr = await sortArr(arr);
-            return sortedArr;
+            return await sortArr(arr);
         });
     return await Promise.all(list);
 }
@@ -166,8 +154,7 @@ async function getChainInfo(url) {
                 });
         })
     );
-    let sortedChainInfo = await sortObj(chainListObj);
-    return sortedChainInfo;
+    return chainListObj;
 }
 
 (async () => {
@@ -183,7 +170,7 @@ async function getChainInfo(url) {
         ...testnet,
     };
 
-    const data = JSON.stringify(chainList);
+    const data = JSON.stringify(chainList, undefined, 4);
     fs.writeFile(`${dataDir}/data.json`, data, (err) => {
         if (err) {
             console.error(`Error:  ${err}`);

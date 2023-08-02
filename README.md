@@ -1,6 +1,8 @@
 # Cosmregistry API
 Using the power of [json-server](https://github.com/typicode/json-server) & [Swagger UI](https://github.com/swagger-api/swagger-ui), `Cosmregistry API` will generate a `data.json` every hour (or however frequently you specify) using the [Bree Scheduler](https://github.com/breejs/bree). The json-server will pick up the changes to serve over its RESTFUL API with a Swagger interface!
 
+Live working version can be viewed here:  https://cosmoschains.thesilverfox.pro/
+
 # Table of contents
 
 - [Cosmregistry API](#cosmregistry-api)
