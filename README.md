@@ -172,12 +172,12 @@ When you see that a worker for job "gatherData" has come up followed by a "Succe
 Don't forget to change your interval back to `every 1 day`.
 
 #### json-server
-Because we haven't setup NGINX to reverse proxy, this wont be publicly available but it will allow us to see if running the command executes as it should.
+Because we haven't set up NGINX to reverse proxy, this won't be publicly available but it will allow us to see if running the command executes as it should.
 In the root of the `Cosmregistry-API` directory, run this:
 ```sh
 npx json-server --config "./config/json-server.json" "./data/data.json"
 ```
-You should see this output to your console:
+You should see this output in your console:
 ```
 
   \{^_^}/ hi!
@@ -303,6 +303,6 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 Now you can restart your NGINX server to apply the changes.
 
 ## Complete
-All done!  Visit the url you set up as the `server_name` directive and test to make sure everything is working.
-If you are having trouble, start a [discussion](https://github.com/effofxprime/Cosmregistry-API/discussions) and give a detailed explaination of what is going on.
+All done!  Visit the URL you set up as the `server_name` directive and test to make sure everything is working.
+If you are having trouble, start a [discussion](https://github.com/effofxprime/Cosmregistry-API/discussions) and give a detailed explanation of what is going on.
 
